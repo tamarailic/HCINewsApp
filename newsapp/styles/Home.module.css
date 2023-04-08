@@ -1,0 +1,18 @@
+.main_container {}
+
+.left_nav {
+  position: fixed;
+  height: 100vh;
+  width: 250px;
+  background-color: var(--AccentColor);
+  transition: all 250ms;
+}
+
+.nav_top {
+  position: absolute;
+  top: 0;
+  left: 250px;
+  margin: auto;
+  padding: 50px;
+  background-color: aqua;
+}
