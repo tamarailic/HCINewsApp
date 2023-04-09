@@ -11,17 +11,13 @@
 }
 
 .nav_top {
-  position: absolute;
-  top: 0;
-  left: 18rem;
-  margin: auto;
+  margin: auto 0 auto 18rem;
   padding: 1.5rem 2rem;
-  width: 60%;
+ 
 }
 
 .navContents{
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
 }
 
@@ -33,6 +29,10 @@
   transform: scale(1, 1.2);
 }
 
+.searchSection{
+  display: flex;
+  margin: auto;
+}
 .round {
   background-color: var(--BGNeutral);
   width: 100%;
@@ -56,13 +56,17 @@
 
 .round:focus {
   outline: none !important;
-  border:0.063rem solid var(--PrimaryTextHover);
+  border:0.063rem solid var(--BGNeutral);
 }
 
 .imgDiv{
   margin: auto;
+  margin-left: 1rem;
 }
 
+.arrowIconBtn{
+  cursor: pointer;
+}
 .main_area_container {
   margin-top: 100px;
   margin-left: 250px;
