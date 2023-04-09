@@ -44,7 +44,7 @@ function MainArea({ filters }) {
   const [scrollRef, scrollPercentage] = useScrollPercentage();
   const { topNews, isLoading, isError } = getTopNews(currentPage);
 
-  // console.log(scrollPercentage);
+  console.log(scrollPercentage);
 
   if (isLoading) return <Spinner />
   if (isError) return <Error />

@@ -1,4 +1,6 @@
-.main_container {}
+.main_container {
+  overflow: hidden;
+}
 
 .left_nav {
   position: fixed;
@@ -113,7 +115,7 @@
 }
 
 .big_story .story_image {
-  height: 200px;
+  height: 300px;
   overflow: hidden;
 }
 
