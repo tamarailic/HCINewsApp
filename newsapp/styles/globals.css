@@ -4,9 +4,11 @@
 }
 
 :root {
+  --Background: #fff;
   --PrimaryText: #333;
   --SecondaryText: rgba(51, 51, 51, 0.5);
   --ThirdText: rgba(0, 0, 0, 0.1);
+
   --PrimaryTextHover: #252525;
   --BGNeutral: #f4f4f4;
   --NavbarFontSize: 24px;
@@ -15,8 +17,8 @@
 }
 
 body {
-  background-color: var(--BGNeutral);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Almarai', sans-serif;
+  background-color: var(--Background);
   line-height: 1.6;
   color: var(--PrimaryText);
   margin: 0;
