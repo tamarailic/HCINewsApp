@@ -1,14 +1,15 @@
 import styles from '@/styles/Home.module.css'
 import useSWR from 'swr'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Spinner from '@/components/spinner';
 import Error from '@/components/error';
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
+import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = 'f0885235e81b407294d7c96b9e3f60a4';
+const newsApiKey = '695130e5e3b84111af647c9f2195a102';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', county: 'us' });
@@ -69,6 +70,7 @@ function SearchBar() {
   )
 }
 function MainArea({ filters }) {
+  const { myGlobalData, setMyGlobalData } = useContext(MyAppContext);
   const [newsToShow, setNewsToShow] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [readyToLoadMore, setReadyToLoadMore] = useState(true);
@@ -123,8 +125,8 @@ function MainArea({ filters }) {
         <div className={styles.main_area_container}>
           <h2 className={styles.page_title}>{`${hasAppliedFilters(filters) ? 'For you' : 'Top Stories'}`}</h2>
           <div className={styles.story_grid}>
-            {[newsToShow[0]].map(bigStory => <BigStoryCard key={bigStory['title'] || crypto.randomUUID()} story={bigStory} />)}
-            {newsToShow.slice(1).map(regularStory => <RegularStoryCard key={regularStory['title'] || crypto.randomUUID()} story={regularStory} />)}
+            {[newsToShow[0]].map(bigStory => <BigStoryCard passValue={setMyGlobalData} key={bigStory['title'] || crypto.randomUUID()} story={bigStory} />)}
+            {newsToShow.slice(1).map(regularStory => <RegularStoryCard passValue={setMyGlobalData} key={regularStory['title'] || crypto.randomUUID()} story={regularStory} />)}
           </div>
         </div>
       }
@@ -185,9 +187,9 @@ function hasAppliedFilters(filters) {
   }
 }
 
-function RegularStoryCard({ story }) {
+function RegularStoryCard({ story, passValue }) {
   return (
-    <Link href={`/articles/${story['title']}`} style={{ textDecoration: 'none' }}>
+    <Link onClick={() => passValue(story)} href={'/articles'} style={{ textDecoration: 'none' }}>
       <div className={styles.regular_story + ' ' + styles.card}>
         <div className={styles.main_story_area}>
           <div className={styles.story_content}>
@@ -207,10 +209,10 @@ function RegularStoryCard({ story }) {
   );
 }
 
-function BigStoryCard({ story }) {
+function BigStoryCard({ story, passValue }) {
   return (
     <div className={styles.big_story + ' ' + styles.card}>
-      <Link href={`/articles/${story['title']}`} style={{ textDecoration: 'none' }}>
+      <Link onClick={() => passValue(story)} href={'/articles'} style={{ textDecoration: 'none' }}>
         <div className={styles.main_story_area}>
           <div className={styles.story_image}>
             {story['urlToImage'] ? <img src={story['urlToImage']} alt={story['title']} /> : <img src="/images/articleImageBackup.jpg" alt={story['title']} />}
