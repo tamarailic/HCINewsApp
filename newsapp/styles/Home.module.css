@@ -15,15 +15,14 @@
 .nav_top {
   margin: auto 0 auto 18rem;
   padding: 1.5rem 2rem;
- 
 }
 
-.navContents{
+.navContents {
   display: flex;
   align-items: center;
 }
 
-.currentDate{
+.currentDate {
   padding: 0;
   text-align: center;
   font-weight: 800;
@@ -31,7 +30,7 @@
   transform: scale(1, 1.2);
 }
 
-.searchSection{
+.searchSection {
   display: flex;
   margin: auto;
 }
@@ -59,15 +58,15 @@
 
 .round:focus {
   outline: none !important;
-  border:0.063rem solid var(--BGNeutral);
+  border: 0.063rem solid var(--BGNeutral);
 }
 
-.imgDiv{
+.imgDiv {
   margin: auto;
   margin-left: 1rem;
 }
 
-.arrowIconBtn{
+.arrowIconBtn {
   cursor: pointer;
 }
 
@@ -183,16 +182,16 @@
 }
 
 .main_area_container {
-  margin-top: 100px;
   margin-left: 250px;
   padding: 1% 20%;
+  padding-top: 0;
 }
 
 .story_grid {
   display: grid;
   gap: 1%;
   grid-template-columns: repeat(2, 1fr);
-
+  /* margin-bottom: 1000px; */
 }
 
 .page_title {
@@ -276,7 +275,7 @@
 }
 
 .big_story .story_image {
-  height: 200px;
+  height: 300px;
   overflow: hidden;
 }
 
