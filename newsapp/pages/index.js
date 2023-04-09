@@ -56,12 +56,18 @@ function TopNav({ filters, setFilters }) {
 
 function SearchBar(){
   return (
-  <div className={styles.search}>
-    <input type="text" name="search" className={styles.round} placeholder='Search' />
-    <div className={styles.imgDiv}>
-      <Image src="/images/searchIcon.png" width={24} height={24} alt='search icon'/>
+    <div className={styles.searchSection}>
+      <div className={styles.search}>
+         <input type="text" name="search" className={styles.round} placeholder='Search' />
+          <div className={styles.imgDiv}>
+            <Image src="/images/searchIcon.png" width={24} height={24} alt='search icon'/>
+          </div>
+      </div>
+      <div className={`${styles.imgDiv} ${styles.arrowIconBtn}`}>
+            <Image src="/images/searchArrowIcon.png" width={32} height={32} alt='search arrow icon'/>
+          </div>
     </div>
-  </div>)
+  )
 }
 function MainArea({ filters }) {
   const [newsToShow, setNewsToShow] = useState(null);
