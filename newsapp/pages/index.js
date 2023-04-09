@@ -56,10 +56,14 @@ function MainArea({ filters }) {
   return (
     <>
       {newsToShow !== null &&
-        <div className={styles.story_grid}>
-          {[newsToShow.shift()].map(bigStory => <BigStoryCard key={bigStory['title']} story={bigStory} />)}
-          {newsToShow.map(regularStory => <RegularStoryCard key={regularStory['title']} story={regularStory} />)}
-        </div>}
+        <div className={styles.main_area_container}>
+          <h2 className={styles.page_title}>Top Stories</h2>
+          <div className={styles.story_grid}>
+            {[newsToShow.shift()].map(bigStory => <BigStoryCard key={bigStory['title']} story={bigStory} />)}
+            {newsToShow.map(regularStory => <RegularStoryCard key={regularStory['title']} story={regularStory} />)}
+          </div>
+        </div>
+      }
     </>
   );
 }

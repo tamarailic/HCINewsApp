@@ -19,13 +19,22 @@
   background-color: aqua;
 }
 
+.main_area_container {
+  margin-top: 100px;
+  margin-left: 250px;
+  padding: 1% 20%;
+}
+
 .story_grid {
   display: grid;
   gap: 1%;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 100px;
-  margin-left: 250px;
-  padding: 1% 20%;
+
+}
+
+.page_title {
+  font-size: 3rem;
+  color: var(--AccentColor);
 }
 
 .card {
