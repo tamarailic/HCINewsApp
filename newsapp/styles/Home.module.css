@@ -3,7 +3,7 @@
 .left_nav {
   position: fixed;
   height: 100vh;
-  width: 250px;
+  width: 18rem;
   background-color: var(--AccentColor);
   transition: all 250ms;
 }
@@ -11,8 +11,52 @@
 .nav_top {
   position: absolute;
   top: 0;
-  left: 250px;
+  left: 18rem;
   margin: auto;
-  padding: 50px;
-  background-color: aqua;
+  padding: 1.5rem 2rem;
+  width: 60%;
+}
+
+.navContents{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.currentDate{
+  padding: 0;
+  text-align: center;
+  font-weight: 800;
+  font-size: 2rem;
+  transform: scale(1, 1.2);
+}
+
+.round {
+  background-color: var(--BGNeutral);
+  width: 100%;
+  height: 100%;
+  border: 0.063rem solid var(--BGNeutral);
+  border-radius: 1.5rem;
+  padding: 0.313rem 0.313rem 0.313rem 1.563rem;
+}
+
+.search {
+  display: flex;
+  align-items: baseline;
+  border: 0.063rem solid var(--BGNeutral);
+  border-radius: 1.5rem;
+  background-color: var(--BGNeutral);
+  position: relative;
+  width: 30vw;
+  height: 3rem;
+  padding-right: 1rem;
+}
+
+.round:focus {
+  outline: none !important;
+  border:0.063rem solid var(--PrimaryTextHover);
+}
+
+.imgDiv{
+  margin: auto;
 }

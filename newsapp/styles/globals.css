@@ -4,17 +4,19 @@
 }
 
 :root {
-  --DarkGray: #333;
-  --DarkGrayHover: #252525;
-  --LightGray: #f4f4f4;
+  --Background: #fff;
+  --PrimaryText: #333;
+  --SecondaryText: rgba(51, 51, 51, 0.5);
+  --PrimaryTextHover: #252525;
+  --BGNeutral: #f4f4f4;
   --NavbarFontSize: 24px;
   --FontSize: 1.2rem;
-  --AccentColor: #ffbf00
+  --AccentColor: #ffbf00;
 }
 
 body {
-  background-color: var(--LightGray);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Almarai', sans-serif;
+  background-color: var(--Background);
   line-height: 1.6;
   color: var(--DarkGray);
   margin: 0;
