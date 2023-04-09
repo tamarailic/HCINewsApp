@@ -3,11 +3,13 @@
 .left_nav {
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
-  height: 100vh;
+  min-height: 100vh;
   width: 18rem;
   background-color: var(--AccentColor);
   transition: all 250ms;
+  overflow-y: scroll;
 }
 
 .nav_top {
@@ -18,7 +20,7 @@
 
 .navContents{
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
 .currentDate{
@@ -33,6 +35,7 @@
   display: flex;
   margin: auto;
 }
+
 .round {
   background-color: var(--BGNeutral);
   width: 100%;
@@ -67,6 +70,118 @@
 .arrowIconBtn{
   cursor: pointer;
 }
+
+.country{
+  display: flex;
+  align-items: baseline;
+  border: 0.063rem solid var(--BGNeutral);
+  border-radius: 1rem;
+  background-color: var(--BGNeutral);
+  position: relative;
+  height: 3rem;
+  padding-right: 1rem;
+  margin-right: auto;
+}
+
+.categoriesTitle{
+  margin-left: 1rem;
+  margin-top: 2rem;
+  font-weight: 1000;
+  color: var(--BGNeutral);
+}
+
+.categoryIconTitle{
+  font-weight: 1000;
+  color: var(--BGNeutral);
+}
+
+.breakLine{
+  width: 90%;
+  border: 1px solid var(--BGNeutral);
+  margin-bottom: 1rem;
+}
+
+.categoryCard{
+  height: 3rem;
+  margin:0.3rem;
+  margin-bottom: 0;
+  display: flex;
+  align-items:center;
+}
+
+.categoryCard:hover{
+  background-color: var(--BGNeutral);
+  border:0.063rem solid var(--BGNeutral);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.categoryCard:hover > .categoryIconTitle{
+  color: var(--PrimaryText);
+}
+
+.categoryIcon{
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.datesTitle{
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 1000;
+  color: var(--BGNeutral);
+}
+
+.datesDiv{
+  display: flex;
+}
+
+.dates{
+  border: 0.063rem solid var(--Background);
+  border-radius: 0.5rem;
+  background-color: var(--Background);
+  position: relative;
+  height: 2rem;
+  width: 50%;
+  margin-right: 4rem;
+  margin-left: auto;
+}
+
+.dateInput {
+  background-color: var(--Background);
+  width: 100%;
+  height: 100%;
+  border: 0.063rem solid var(--Background);
+  border-radius: 1.5rem;
+  padding: 0.313rem 0.313rem 0.313rem 1.563rem;
+}
+
+.dateInput:focus {
+  outline: none !important;
+  border:0.063rem solid var(--Background);
+}
+
+.categoryIconDiv{
+  padding: 0.3rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.letterIcon{
+  font-weight: 1000;
+  color: var(--BGNeutral);
+  margin: 0;
+  text-align: center;
+}
+
 .main_area_container {
   margin-top: 100px;
   margin-left: 250px;
