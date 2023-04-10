@@ -303,16 +303,14 @@ function MainArea({ filters, isExpended }) {
       const scrollPercentage = getScrollPercent();
       if (readyToLoadMore && currentPage <= 4 && scrollPercentage > procentageOfScrollAfterToLoadNewStories) {
         setReadyToLoadMore(false);
-        setCurrentPage(currentPage + 1);
         const loadMoreNews = shouldSearchEverything(filters) ? loadMoreFilteredNews : loadMoreTopNews;
         const newStories = await loadMoreNews(filters, currentPage + 1);
 
-        if (newStories != null) {
-          const allNews = JSON.parse(JSON.stringify(newsToShow)).concat(newStories['articles']);
-          setNewsToShow(allNews.filter(item => item != undefined));
-          if (!allNews.includes(undefined) && newStories['totalResults'] != allNews.length) {
-            setReadyToLoadMore(true);
-          }
+        const allNews = JSON.parse(JSON.stringify(newsToShow)).concat(newStories['articles']);
+        setNewsToShow(allNews.filter(item => item != undefined));
+        if (newStories['totalResults'] != allNews.length) {
+          setReadyToLoadMore(true);
+          setCurrentPage(currentPage + 1);
         }
       }
     }
@@ -339,7 +337,6 @@ function MainArea({ filters, isExpended }) {
     if (topNews['articles'] && topNews['totalResults'] <= topNews['articles'].length) {
       setReadyToLoadMore(false);
     }
-    console.log(topNews['articles']);
   }
   if (didFiltersChange(filters, lastFilters)) {
     setLastFilters(JSON.parse(JSON.stringify(filters)));
@@ -370,7 +367,7 @@ function RegularStoryCard({ story, passValue }) {
         <div className={styles.main_story_area}>
           <div className={styles.story_content}>
             <div className={styles.story_source}>{story['source']['name'] || ''}</div>
-            <div className={styles.story_title}>{`${story['title'].split(' ').slice(0, 9).join(' ')}`}</div>
+            <div className={styles.story_title}>{`${story['title'].split(' ').slice(0, 12).join(' ')}`}</div>
           </div>
           <div className={styles.story_image}>
             {story['urlToImage'] ? <Image src={story['urlToImage']} alt={story['title']} width={130} height={130} /> : <Image src="/images/articleImageBackup.jpg" alt={story['title']} width={130} height={130} />}
@@ -439,9 +436,6 @@ function getTopNews(filters, page = 1, page_size = 20) {
 
   url += `&apiKey=${newsApiKey}`;
 
-  console.log("***");
-  console.log(url);
-
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {
@@ -453,10 +447,6 @@ function getTopNews(filters, page = 1, page_size = 20) {
 
 function getFilteredNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/everything?language=en&pageSize=${page_size}&page=${page}&sortBy=publishedAt`;
-
-
-
-  console.log();
 
   if (filters['from']) url += `&from=${filters['from']}`;
   if (filters['to']) {
