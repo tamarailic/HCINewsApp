@@ -61,21 +61,27 @@ function TopNav({ filters, setFilters, setReporters, allReporters, isExpended })
 }
 
 function SearchBar({ filters, setFilters }) {
-  const [query, setQuery] = useState(null)
+  const [query, setQuery] = useState(null);
+  const [searchInFocus, setSearchInFocus] = useState(false);
 
   function handleNewQuery(event) {
-    setQuery(event.target.value)
+    setQuery(event.target.value);
   }
 
   function handleQuerySearched() {
-    const newFilters = JSON.parse(JSON.stringify(filters))
-    newFilters['q'] = query
-    setFilters(newFilters)
+    setSearchInFocus(false);
+    const newFilters = JSON.parse(JSON.stringify(filters));
+    newFilters['q'] = query;
+    setFilters(newFilters);
+  }
+
+  function handleSearchInFocus(){
+    setSearchInFocus(true);
   }
 
   return (
     <div className={styles.searchSection}>
-      <div className={styles.search}>
+      <div className={styles.search} style={searchInFocus ? {border:"0.063rem solid #000"} : {border:"0.063rem solid var(--BGNeutral)"}} onClick={handleSearchInFocus}>
         <input type="text" name="search" className={styles.round} placeholder='Search' onChange={handleNewQuery} />
         <div className={styles.imgDiv}>
           <Image src="/images/searchIcon.png" width={24} height={24} alt='search icon' />
@@ -229,6 +235,7 @@ function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters, selecte
   function handleCategoryChange() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['category'] = title.toLowerCase()
+    newFilters['q'] = '';
     newFilters['sources'] = '';
     setFilters(newFilters)
     setSelected()
@@ -262,6 +269,7 @@ function ReportCard({ cardStyle, title, id, filters, setFilters, selected, setSe
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['sources'] = id
     newFilters['category'] = '';
+    newFilters['q'] = '';
     setFilters(newFilters)
     setSelected()
   }
