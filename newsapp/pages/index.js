@@ -9,7 +9,7 @@ import Head from 'next/head';
 import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = 'f0885235e81b407294d7c96b9e3f60a4';
+const newsApiKey = 'fe85571adc394f96ae927a0c4101459e';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
@@ -166,17 +166,26 @@ function DatesSection({ filters, setFilters }) {
   const [to, setTo] = useState("");
 
   function handleFromChanged(event) {
-    const newFilters = JSON.parse(JSON.stringify(filters))
-    newFilters['from'] = event.target.value
-    setFrom(event.target.value)
-    setFilters(newFilters)
+    if(new Date(event.target.value) > new Date(filters['to'])){
+      event.target.value = ""
+    }else{
+      const newFilters = JSON.parse(JSON.stringify(filters))
+      newFilters['from'] = event.target.value
+      setFrom(event.target.value)
+      setFilters(newFilters)
+    }
+    
   }
 
   function handleToChanged(event) {
+    if(new Date(event.target.value) < new Date(filters['from'])){
+      event.target.value = ""
+    }else{
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['to'] = event.target.value
     setTo(event.target.value)
     setFilters(newFilters)
+    }
   }
 
   function clearFromChanged(event) {
@@ -321,7 +330,8 @@ function MainArea({ filters, isExpended }) {
 
         const allNews = JSON.parse(JSON.stringify(newsToShow)).concat(newStories['articles']);
         setNewsToShow(allNews.filter(item => item != undefined));
-        if (newStories['totalResults'] != allNews.length) {
+        if (newStories['totalResults'] > newStories['articles'] + newStories.length) {
+
           setReadyToLoadMore(true);
           setCurrentPage(currentPage + 1);
         }
@@ -439,6 +449,7 @@ function hasFilters(filters) {
 function getTopNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/top-headlines?pageSize=${page_size}&page=${page}`
 
+
   if (filters['sources']) {
     url += `&sources=${filters['sources']}`
   } else {
@@ -448,7 +459,6 @@ function getTopNews(filters, page = 1, page_size = 20) {
   }
 
   url += `&apiKey=${newsApiKey}`;
-
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {
