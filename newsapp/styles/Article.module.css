@@ -1,0 +1,149 @@
+.topSection {
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+    border-bottom: 1px solid var(--ThirdText);
+    padding: 20px;
+}
+
+.article {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    margin: auto;
+    padding: 0 20px;
+    margin-bottom: 100px;
+}
+
+.imageContainer {
+    width: 60%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.imageContainer img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.article_date {
+    font-size: 1rem;
+    color: var(--SecondaryText);
+    margin: 0;
+    padding: 0;
+}
+
+.article_title {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.line {
+    width: 20%;
+    border: 2px solid var(--ThirdText);
+}
+
+.article_authors {
+    color: var(--SecondaryText);
+}
+
+.content_cointainer {
+    margin-top: 20px;
+}
+
+.article_content {
+    color: var(--PrimaryText);
+    font-size: 1.1rem;
+    font-stretch: ultra-expanded;
+    line-height: 1.8;
+}
+
+.article_link {
+    color: var(--AccentColor) !important;
+    text-decoration: underline;
+    font-size: 1.4rem;
+}
+
+/* Back arrow */
+
+.backArrow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 40px;
+    cursor: pointer;
+}
+
+/* Header */
+@media (max-width:1069px) {
+
+    .topSection {
+        width: 90%;
+    }
+
+    .article {
+        width: 80%;
+    }
+
+    .imageContainer {
+        width: 80%;
+    }
+
+    .article_title {
+        font-size: 2.2rem;
+    }
+
+}
+
+@media (max-width:768px) {
+
+    .imageContainer {
+        width: 90%;
+    }
+
+    .article_title {
+        font-size: 2rem;
+    }
+
+    .article_authors {
+        font-size: 1.1rem;
+    }
+
+    .article_content {
+        font-size: 1rem;
+        font-stretch: normal;
+    }
+
+    .article_link {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width:400px) {
+
+    .imageContainer {
+        width: 100%;
+    }
+
+    .article_title {
+        font-size: 1.6rem;
+    }
+
+    .article_authors {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .article_content {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    .article_link {
+        font-size: 1.2rem;
+    }
+}
