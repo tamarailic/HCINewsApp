@@ -359,7 +359,7 @@ function MainArea({ filters, isExpended }) {
 
   return (
     <>
-      {newsToShow !== null &&
+      {newsToShow !== null && newsToShow.length > 0 &&
         <div className={`${styles.main_area_container} ${!isExpended ? styles.adaptToNav : null}`}>
           <h2 className={styles.page_title}>{`${hasFilters(filters) ? 'For you' : 'Top Stories'}`}</h2>
           <div className={styles.story_grid}>
@@ -436,7 +436,7 @@ function hasFilters(filters) {
 }
 
 function getTopNews(filters, page = 1, page_size = 20) {
-  let url = `https://newsapi.org/v2/top-headlines?language=en&pageSize=${page_size}&page=${page}`
+  let url = `https://newsapi.org/v2/top-headlines?pageSize=${page_size}&page=${page}`
 
   if (filters['sources']) {
     url += `&sources=${filters['sources']}`
