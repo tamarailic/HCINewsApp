@@ -91,7 +91,7 @@ function SearchBar({ filters, setFilters }) {
 function CountryPicker({ filters, setFilters, setReporters, allReporters }) {
   return (
     <div className={styles.country}>
-      <div className={`${styles.imgDiv}`}>
+      <div className={styles.imgDiv}>
         <Image src="/images/planet-earth.png" width={24} height={24} alt='planet icon' />
       </div>
       <CountryDropDown filters={filters} setFilters={setFilters} setReporters={setReporters} allReporters={allReporters} />
@@ -109,8 +109,9 @@ function CountryDropDown({ filters, setFilters, setReporters, allReporters }) {
   function handleChange(event) {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['country'] = event.target.value
+    newFilters['sources'] = ''
     setFilters(newFilters)
-    const filteredReporters = allReporters.filter(el => el['country'] == event.target.value).map(reporter => reporter['name']);
+    const filteredReporters = allReporters.filter(el => el['country'] == event.target.value).map(reporter => { return { name: reporter['name'], id: reporter['id'] } });
     setReporters(filteredReporters)
   }
 
@@ -120,13 +121,14 @@ function CountryDropDown({ filters, setFilters, setReporters, allReporters }) {
 }
 
 function LeftNav({ filters, setFilters, reporters, isExpended, setIsExpended }) {
+  const [selected, setSelected] = useState(null)
   return (
     <>
       <HamburgerMenu isExpended={isExpended} setIsExpended={setIsExpended} />
       <div className={`${styles.left_nav} ${!isExpended ? styles.hide_nav : null}`}>
         <DatesSection filters={filters} setFilters={setFilters} />
-        <CategoriesSection filters={filters} setFilters={setFilters} />
-        <ReportersSection filters={filters} setFilters={setFilters} reporters={reporters} />
+        <CategoriesSection selected={selected} setSelected={setSelected} filters={filters} setFilters={setFilters} />
+        <ReportersSection selected={selected} setSelected={setSelected} filters={filters} setFilters={setFilters} reporters={reporters} />
       </div>
     </>
   );
@@ -202,8 +204,7 @@ function DatesSection({ filters, setFilters }) {
     </div></>)
 }
 
-function CategoriesSection({ filters, setFilters }) {
-  const [selected, setSelected] = useState(null)
+function CategoriesSection({ filters, setFilters, selected, setSelected }) {
 
   function handleSelectedCategory(title) {
     setSelected(title)
@@ -242,8 +243,7 @@ function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters, selecte
   </div>)
 }
 
-function ReportersSection({ filters, setFilters, reporters }) {
-  const [selected, setSelected] = useState(null)
+function ReportersSection({ filters, setFilters, reporters, selected, setSelected }) {
 
   function handleSelectedReporter(title) {
     setSelected(title)
