@@ -65,6 +65,11 @@ function SearchBar({ filters, setFilters }) {
   const [searchInFocus, setSearchInFocus] = useState(false);
 
   function handleNewQuery(event) {
+    if(event.target.value == ''){
+      const newFilters = JSON.parse(JSON.stringify(filters));
+      newFilters['q'] = '';
+      setFilters(newFilters);
+    }
     setQuery(event.target.value);
   }
 
