@@ -74,7 +74,8 @@ function SearchBar({ filters, setFilters }) {
     setQuery(event.target.value);
   }
 
-  function handleQuerySearched() {
+  function handleQuerySearched(event) {
+    event.target.value =''
     setSearchInFocus(false);
     const newFilters = JSON.parse(JSON.stringify(filters));
     newFilters['q'] = query;
@@ -133,14 +134,13 @@ function CountryDropDown({ filters, setFilters, setReporters, allReporters }) {
 }
 
 function LeftNav({ filters, setFilters, reporters, isExpended, setIsExpended }) {
-  const [selected, setSelected] = useState(null)
   return (
     <>
       <HamburgerMenu isExpended={isExpended} setIsExpended={setIsExpended} />
       <div className={`${styles.left_nav} ${!isExpended ? styles.hide_nav : null}`}>
         <DatesSection filters={filters} setFilters={setFilters} />
-        <CategoriesSection selected={selected} setSelected={setSelected} filters={filters} setFilters={setFilters} />
-        <ReportersSection selected={selected} setSelected={setSelected} filters={filters} setFilters={setFilters} reporters={reporters} />
+        <CategoriesSection filters={filters} setFilters={setFilters} />
+        <ReportersSection filters={filters} setFilters={setFilters} reporters={reporters} />
       </div>
     </>
   );
@@ -225,78 +225,69 @@ function DatesSection({ filters, setFilters }) {
     </div></>)
 }
 
-function CategoriesSection({ filters, setFilters, selected, setSelected }) {
-
-  function handleSelectedCategory(title) {
-    setSelected(title)
-  }
+function CategoriesSection({ filters, setFilters}) {
 
   return (<>
     <h2 className={styles.categoriesTitle}>Categories</h2>
     <hr className={styles.breakLine} />
     <div>
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("General")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/generalCategory.png" title="General" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Health")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #FF0053", backgroundColor: "#FF0053" }} imageUrl="/images/healthCategory.png" title="Health" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Sports")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/sportsCategory.png" title="Sports" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Entertainment")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/entertainmentCategory.png" title="Entertainment" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Science")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/scienceCategory.png" title="Science" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Business")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/businessCategory.png" title="Business" />
-      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Technology")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/techCategory.png" title="Technology" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/generalCategory.png" title="General" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #FF0053", backgroundColor: "#FF0053" }} imageUrl="/images/healthCategory.png" title="Health" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/sportsCategory.png" title="Sports" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/entertainmentCategory.png" title="Entertainment" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/scienceCategory.png" title="Science" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/businessCategory.png" title="Business" />
+      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/techCategory.png" title="Technology" />
     </div>
   </>)
 }
 
-function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters, selected, setSelected }) {
+function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters}) {
   function handleCategoryChange() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['category'] = title.toLowerCase()
     newFilters['q'] = '';
     newFilters['sources'] = '';
     setFilters(newFilters)
-    setSelected()
   }
   const selectedStyle = { backgroundColor: "var(--BGNeutral)", border: "0.063rem solid var(--BGNeutral)", borderRadius: "0.3rem", cursor: "pointer" }
 
-  return (<div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleCategoryChange}>
+  return (<div style={title.toLowerCase() == filters['category'] ? selectedStyle : {}} className={styles.categoryCard} onClick={handleCategoryChange}>
     <div style={cardStyle} className={styles.categoryIcon}>
       <Image src={imageUrl} width={18} height={18} alt={title} />
     </div>
-    <h4 style={title == selected ? { color: "#000" } : {}} className={styles.categoryIconTitle}>{title}</h4>
+    <h4 style={title.toLowerCase() == filters['category'] ? { color: "#000" } : {}} className={styles.categoryIconTitle}>{title}</h4>
   </div>)
 }
 
-function ReportersSection({ filters, setFilters, reporters, selected, setSelected }) {
+function ReportersSection({ filters, setFilters, reporters  }) {
 
-  function handleSelectedReporter(title) {
-    setSelected(title)
-  }
   return (<>
     <h2 className={styles.categoriesTitle}>Top reporters in your country</h2>
     <hr className={styles.breakLine} />
     <div>
-      {reporters.map(r => <ReportCard id={r.id} selected={selected} setSelected={() => handleSelectedReporter(r.name)} filters={filters} setFilters={setFilters} key={r.id} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r.name} />)}
+      {reporters.map(r => <ReportCard id={r.id} filters={filters} setFilters={setFilters} key={r.id} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r.name} />)}
     </div>
   </>)
 }
 
-function ReportCard({ cardStyle, title, id, filters, setFilters, selected, setSelected }) {
+function ReportCard({ cardStyle, title, id, filters, setFilters }) {
   function handleReporter() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['sources'] = id
     newFilters['category'] = '';
     newFilters['q'] = '';
     setFilters(newFilters)
-    setSelected()
   }
 
   const selectedStyle = { backgroundColor: "var(--BGNeutral)", border: "0.063rem solid var(--BGNeutral)", borderRadius: "0.3rem", cursor: "pointer" }
 
 
-  return (title && <div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleReporter}>
+  return (title && <div style={id == filters['sources'] ? selectedStyle : {}} className={styles.categoryCard} onClick={handleReporter}>
     <div style={cardStyle} className={styles.categoryIconDiv}>
       <h3 className={styles.letterIcon}>{title.slice(0, 1).toUpperCase()}</h3>
     </div>
-    <h4 style={title == selected ? { color: "#000" } : {}} className={styles.categoryIconTitle}>{title}</h4>
+    <h4 style={id == filters['sources'] ? { color: "#000" } : {}} className={styles.categoryIconTitle}>{title}</h4>
   </div>)
 }
 
