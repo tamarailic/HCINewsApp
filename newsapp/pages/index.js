@@ -90,7 +90,7 @@ function DatesSection({ filters, setFilters }) {
     setFilters(newFilters)
   }
 
-  function claerFromChanged(event) {
+  function clearFromChanged(event) {
     setFrom("")
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['from'] = '';
@@ -111,7 +111,7 @@ function DatesSection({ filters, setFilters }) {
       <div className={styles.dates}>
         <input value={from} type="date" name="from" className={styles.dateInput} onChange={handleFromChanged} />
       </div>
-      <div style={{ cursor: "pointer" }} className={styles.categoryIcon} onClick={claerFromChanged}>
+      <div style={{ cursor: "pointer" }} className={styles.categoryIcon} onClick={clearFromChanged}>
         <Image src="/images/cross.png" width={24} height={24} alt="x" />
       </div>
     </div>
@@ -127,60 +127,75 @@ function DatesSection({ filters, setFilters }) {
 }
 
 function CategoriesSection({ filters, setFilters }) {
+  const [selected, setSelected] = useState(null)
+  
+  function handleSelectedCategory(title){
+      setSelected(title)
+  }
 
   return (<>
     <h2 className={styles.categoriesTitle}>Categories</h2>
     <hr className={styles.breakLine} />
     <div>
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/generalCategory.png" title="General" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #FF0053", backgroundColor: "#FF0053" }} imageUrl="/images/healthCategory.png" title="Health" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/sportsCategory.png" title="Sports" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/entertainmentCategory.png" title="Entertainment" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/scienceCategory.png" title="Science" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/businessCategory.png" title="Business" />
-      <CategoryCard filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/techCategory.png" title="Technology" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("General")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/generalCategory.png" title="General" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Health")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #FF0053", backgroundColor: "#FF0053" }} imageUrl="/images/healthCategory.png" title="Health" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Sports")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/sportsCategory.png" title="Sports" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Entertainment")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/entertainmentCategory.png" title="Entertainment" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Science")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} imageUrl="/images/scienceCategory.png" title="Science" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Business")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #68CC45", backgroundColor: "#68CC45" }} imageUrl="/images/businessCategory.png" title="Business" />
+      <CategoryCard selected={selected} setSelected={() => handleSelectedCategory("Technology")} filters={filters} setFilters={setFilters} cardStyle={{ border: "0.063rem solid #AC39FF", backgroundColor: "#AC39FF" }} imageUrl="/images/techCategory.png" title="Technology" />
     </div>
   </>)
 }
 
-function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters }) {
+function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters, selected, setSelected }) {
   function handleCategoryChange() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['category'] = title.toLowerCase()
     setFilters(newFilters)
+    setSelected()
   }
+  const selectedStyle =  {backgroundColor: "var(--BGNeutral)",border: "0.063rem solid var(--BGNeutral)",borderRadius: "0.3rem",cursor: "pointer"}
 
-  return (<div className={styles.categoryCard} onClick={handleCategoryChange}>
-    <div style={cardStyle} className={styles.categoryIcon} >
+  return (<div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleCategoryChange}>
+    <div style={cardStyle} className={styles.categoryIcon}>
       <Image src={imageUrl} width={18} height={18} alt={title} />
     </div>
-    <h4 className={styles.categoryIconTitle}>{title}</h4>
+    <h4 style={title == selected ? {color:"#000"} : {}} className={styles.categoryIconTitle}>{title}</h4>
   </div>)
 }
 
 function ReportersSection({ filters, setFilters, reporters }) {
-
+  const [selected, setSelected] = useState(null)
+  
+  function handleSelectedReporter(title){
+      setSelected(title)
+  }
   return (<>
     <h2 className={styles.categoriesTitle}>Top reporters in your country</h2>
     <hr className={styles.breakLine} />
     <div>
-      {reporters.map(r => <ReportCard filters={filters} setFilters={setFilters} key={r} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r} />)}
+      {reporters.map(r => <ReportCard selected={selected} setSelected={() => handleSelectedReporter(r)} filters={filters} setFilters={setFilters} key={r} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r} />)}
     </div>
   </>)
 }
 
-function ReportCard({ cardStyle, title, filters, setFilters }) {
+function ReportCard({ cardStyle, title, filters, setFilters, selected, setSelected }) {
   function handleReporter() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['q'] = title
     setFilters(newFilters)
+    setSelected()
   }
 
-  return (<div className={styles.categoryCard} onClick={handleReporter}>
+  const selectedStyle =  {backgroundColor: "var(--BGNeutral)",border: "0.063rem solid var(--BGNeutral)",borderRadius: "0.3rem",cursor: "pointer"}
+
+
+  return (<div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleReporter}>
     <div style={cardStyle} className={styles.categoryIconDiv}>
       <h3 className={styles.letterIcon}>{title.slice(0, 1).toUpperCase()}</h3>
     </div>
-    <h4 className={styles.categoryIconTitle}>{title}</h4>
+    <h4 style={title == selected ? {color:"#000"} : {}} className={styles.categoryIconTitle}>{title}</h4>
   </div>)
 }
 
