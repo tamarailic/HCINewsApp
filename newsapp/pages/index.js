@@ -9,7 +9,7 @@ import Head from 'next/head';
 import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = 'b7f4a29324c5450eb1efed9da362570d';
+const newsApiKey = '89a8cf95f1c54d708a69800a2b1c4195';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
@@ -65,7 +65,7 @@ function SearchBar({ filters, setFilters }) {
   const [searchInFocus, setSearchInFocus] = useState(false);
 
   function handleNewQuery(event) {
-    if(event.target.value == ''){
+    if (event.target.value == '') {
       const newFilters = JSON.parse(JSON.stringify(filters));
       newFilters['q'] = '';
       setFilters(newFilters);
@@ -308,10 +308,11 @@ function MainArea({ filters, isExpended }) {
   const [lastFilters, setLastFilters] = useState(null);
 
   const getNews = shouldSearchEverything(filters) ? getFilteredNews : getTopNews;
+
   const { topNews, isLoading, isError } = getNews(filters, currentPage);
 
   useEffect(() => {
-    const procentageOfScrollAfterToLoadNewStories = 90;
+    const procentageOfScrollAfterToLoadNewStories = 80;
     const handleScroll = async () => {
       const scrollPercentage = getScrollPercent();
       if (readyToLoadMore && currentPage <= 4 && scrollPercentage > procentageOfScrollAfterToLoadNewStories) {
@@ -319,9 +320,10 @@ function MainArea({ filters, isExpended }) {
         const loadMoreNews = shouldSearchEverything(filters) ? loadMoreFilteredNews : loadMoreTopNews;
         const newStories = await loadMoreNews(filters, currentPage + 1);
 
-        const allNews = JSON.parse(JSON.stringify(newsToShow)).concat(newStories['articles']);
-        setNewsToShow(allNews.filter(item => item != undefined));
-        if (newStories['totalResults'] != allNews.length) {
+        let allNews = JSON.parse(JSON.stringify(newsToShow)).concat(newStories['articles']);
+        allNews = allNews.filter(item => item != undefined);
+        setNewsToShow(allNews);
+        if (newStories['totalResults'] > allNews.length) {
           setReadyToLoadMore(true);
           setCurrentPage(currentPage + 1);
         }
@@ -358,8 +360,6 @@ function MainArea({ filters, isExpended }) {
     setReadyToLoadMore(true);
   }
 
-  console.log(filters);
-
   return (
     <>
       {newsToShow && newsToShow.length > 0 &&
@@ -376,6 +376,16 @@ function MainArea({ filters, isExpended }) {
 }
 
 function RegularStoryCard({ story, passValue }) {
+  const urls_to_ban = ['mishtalk', 'thestreet.com'];
+
+  let url_is_ok = true;
+  for (let banned_urls of urls_to_ban) {
+    if (story['urlToImage'] && story['urlToImage'].includes(banned_urls)) {
+      url_is_ok = false;
+      break;
+    }
+  }
+
   return (
     <Link onClick={() => passValue(story)} href={'/articles'} style={{ textDecoration: 'none' }}>
       <div className={styles.regular_story + ' ' + styles.card}>
@@ -385,7 +395,7 @@ function RegularStoryCard({ story, passValue }) {
             <div className={styles.story_title}>{`${story['title'].split(' ').slice(0, 12).join(' ')}`}</div>
           </div>
           <div className={styles.story_image}>
-            {story['urlToImage'] ? <Image src={story['urlToImage']} alt={story['title']} width={130} height={130} /> : <Image src="/images/articleImageBackup.jpg" alt={story['title']} width={130} height={130} />}
+            {story['urlToImage'] && url_is_ok ? <Image src={story['urlToImage']} alt={story['title']} width={130} height={130} /> : <Image src="/images/articleImageBackup.jpg" alt={story['title']} width={130} height={130} />}
           </div>
         </div>
         <div className={styles.story_footer}>
@@ -469,10 +479,16 @@ function getFilteredNews(filters, page = 1, page_size = 20) {
     toDate.setDate(toDate.getDate() - 1);
     url += `&to=${toDate.toISOString().split('T')[0]}`;
   }
-  if (filters['q']) url += `&q=${filters['q']}`;
+  if (filters['q']) {
+    url += `&q=${filters['q']}`;
+  } else {
+    url += `&q=a`;
+  }
   if (filters['sources']) url += `&sources=${filters['sources']}`;
 
   url += `&apiKey=${newsApiKey}`;
+
+  console.log(url);
 
   const { data, error, isLoading } = useSWR(url, fetcher);
 
@@ -504,8 +520,16 @@ async function loadMoreFilteredNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/everything?language=en&pageSize=${page_size}&page=${page}`;
 
   if (filters['from']) url += `&from=${filters['from']}`;
-  if (filters['to']) url += `&to=${filters['to']}`;
-  if (filters['q']) url += `&q=${filters['q']}`;
+  if (filters['to']) {
+    let toDate = new Date(filters['to']);
+    toDate.setDate(toDate.getDate() - 1);
+    url += `&to=${toDate.toISOString().split('T')[0]}`;
+  }
+  if (filters['q']) {
+    url += `&q=${filters['q']}`;
+  } else {
+    url += `&q=a`;
+  }
   if (filters['sources']) url += `&sources=${filters['sources']}`;
 
   url += `&apiKey=${newsApiKey}`;
