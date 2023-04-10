@@ -24,7 +24,7 @@ export default function Home() {
 
   if (allReporters === null) {
     setAllReporters(reportersResponse['sources']);
-    const filteredReporters = reportersResponse['sources'].filter(el => el['country'] == filters['country']).map(reporter => { return { name:reporter['name'], id:reporter['id']}});
+    const filteredReporters = reportersResponse['sources'].filter(el => el['country'] == filters['country']).map(reporter => { return { name: reporter['name'], id: reporter['id'] } });
     setReporters(filteredReporters);
   }
 
@@ -430,10 +430,13 @@ function hasFilters(filters) {
 function getTopNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/top-headlines?language=en&pageSize=${page_size}&page=${page}`
 
-  if (filters['q']) url += `&q=${filters['q']}`;
-  if (filters['country']) url += `&country=${filters['country']}`
-  if (filters['category']) url += `&category=${filters['category']}`;
-  if (filters['sources']) url += `&sources=${filters['sources']}`;
+  if (filters['sources']) {
+    url += `&sources=${filters['sources']}`
+  } else {
+    if (filters['q']) url += `&q=${filters['q']}`;
+    if (filters['country']) url += `&country=${filters['country']}`
+    if (filters['category']) url += `&category=${filters['category']}`;
+  }
 
   url += `&apiKey=${newsApiKey}`;
 
@@ -471,10 +474,13 @@ function getFilteredNews(filters, page = 1, page_size = 20) {
 async function loadMoreTopNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/top-headlines?language=en&pageSize=${page_size}&page=${page}`
 
-  if (filters['q']) url += `&q=${filters['q']}`;
-  if (filters['country']) url += `&country=${filters['country']}`
-  if (filters['category']) url += `&category=${filters['category']}`;
-  if (filters['sources']) url += `&sources=${filters['sources']}`;
+  if (filters['sources']) {
+    url += `&sources=${filters['sources']}`;
+  } else {
+    if (filters['q']) url += `&q=${filters['q']}`;
+    if (filters['country']) url += `&country=${filters['country']}`;
+    if (filters['category']) url += `&category=${filters['category']}`;
+  }
 
   url += `&apiKey=${newsApiKey}`;
 
