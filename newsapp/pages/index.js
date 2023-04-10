@@ -9,7 +9,7 @@ import Head from 'next/head';
 import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = '339e56b6d42f4a0ab9c4f820c0a35558';
+const newsApiKey = 'f0885235e81b407294d7c96b9e3f60a4';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
@@ -269,7 +269,7 @@ function ReportCard({ cardStyle, title, id, filters, setFilters, selected, setSe
   const selectedStyle = { backgroundColor: "var(--BGNeutral)", border: "0.063rem solid var(--BGNeutral)", borderRadius: "0.3rem", cursor: "pointer" }
 
 
-  return (<div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleReporter}>
+  return (title && <div style={title == selected ? selectedStyle : {}} className={styles.categoryCard} onClick={handleReporter}>
     <div style={cardStyle} className={styles.categoryIconDiv}>
       <h3 className={styles.letterIcon}>{title.slice(0, 1).toUpperCase()}</h3>
     </div>
@@ -336,13 +336,12 @@ function MainArea({ filters, isExpended }) {
 
   if (newsToShow === null || didFiltersChange(filters, lastFilters)) {
     setNewsToShow(topNews['articles']);
-    if (topNews['totalResults'] <= topNews['articles'].length) {
+    if (topNews['articles'] && topNews['totalResults'] <= topNews['articles'].length) {
       setReadyToLoadMore(false);
     }
     console.log(topNews['articles']);
   }
   if (didFiltersChange(filters, lastFilters)) {
-    console.log("AAA")
     setLastFilters(JSON.parse(JSON.stringify(filters)));
     setMyGlobalData(null);
     setCurrentPage(1);
@@ -351,7 +350,7 @@ function MainArea({ filters, isExpended }) {
 
   return (
     <>
-      {newsToShow !== null && newsToShow.length > 0 &&
+      {newsToShow && newsToShow.length > 0 &&
         <div className={`${styles.main_area_container} ${!isExpended ? styles.adaptToNav : null}`}>
           <h2 className={styles.page_title}>{`${hasFilters(filters) ? 'For you' : 'Top Stories'}`}</h2>
           <div className={styles.story_grid}>
@@ -453,10 +452,18 @@ function getTopNews(filters, page = 1, page_size = 20) {
 }
 
 function getFilteredNews(filters, page = 1, page_size = 20) {
-  let url = `https://newsapi.org/v2/everything?language=en&pageSize=${page_size}&page=${page}`;
+  let url = `https://newsapi.org/v2/everything?language=en&pageSize=${page_size}&page=${page}&sortBy=publishedAt`;
+
+
+
+  console.log();
 
   if (filters['from']) url += `&from=${filters['from']}`;
-  if (filters['to']) url += `&to=${filters['to']}`;
+  if (filters['to']) {
+    let toDate = new Date(filters['to']);
+    toDate.setDate(toDate.getDate() - 1);
+    url += `&to=${toDate.toISOString().split('T')[0]}`;
+  }
   if (filters['q']) url += `&q=${filters['q']}`;
   if (filters['sources']) url += `&sources=${filters['sources']}`;
 
