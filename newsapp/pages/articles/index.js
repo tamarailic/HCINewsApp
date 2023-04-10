@@ -33,7 +33,7 @@ function TopSection() {
 
 function StorySection({ article }) {
 
-    return (<div className={styles.article}>
+    return (article && <div className={styles.article}>
         <div className={styles.imageContainer}>
             <img src={article['urlToImage']} />
         </div>

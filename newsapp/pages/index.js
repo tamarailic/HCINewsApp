@@ -44,12 +44,16 @@ export default function Home() {
 }
 
 function TopNav({ filters, setFilters, setReporters, allReporters, isExpended }) {
+
+  function resetFilters() {
+    setFilters({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
+  }
   return (
     <div className={`${styles.nav_top} ${!isExpended ? styles.adaptToNav : null}`}>
       <div className={styles.navContents}>
         <div>
           <div>
-            <Image src="/HCI_logo1.png" width={120} height={100} alt='News logo' />
+            <Image src="/HCI_logo1.png" width={120} height={100} alt='News logo' onClick={resetFilters} className={styles.logo} />
           </div>
           <div className={styles.currentDate}>{new Date(Date.now()).toDateString().slice(4, 11)}</div>
         </div>
@@ -166,17 +170,26 @@ function DatesSection({ filters, setFilters }) {
   const [to, setTo] = useState("");
 
   function handleFromChanged(event) {
-    const newFilters = JSON.parse(JSON.stringify(filters))
-    newFilters['from'] = event.target.value
-    setFrom(event.target.value)
-    setFilters(newFilters)
+    if (new Date(event.target.value) > new Date(filters['to'])) {
+      event.target.value = ""
+    } else {
+      const newFilters = JSON.parse(JSON.stringify(filters))
+      newFilters['from'] = event.target.value
+      setFrom(event.target.value)
+      setFilters(newFilters)
+    }
+
   }
 
   function handleToChanged(event) {
-    const newFilters = JSON.parse(JSON.stringify(filters))
-    newFilters['to'] = event.target.value
-    setTo(event.target.value)
-    setFilters(newFilters)
+    if (new Date(event.target.value) < new Date(filters['from'])) {
+      event.target.value = ""
+    } else {
+      const newFilters = JSON.parse(JSON.stringify(filters))
+      newFilters['to'] = event.target.value
+      setTo(event.target.value)
+      setFilters(newFilters)
+    }
   }
 
   function clearFromChanged(event) {
@@ -266,6 +279,7 @@ function ReportersSection({ filters, setFilters, reporters, selected, setSelecte
     <div>
       {reporters.map(r => <ReportCard id={r.id} selected={selected} setSelected={() => handleSelectedReporter(r.name)} filters={filters} setFilters={setFilters} key={r.id} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r.name} />)}
     </div>
+    <br />
   </>)
 }
 
@@ -451,6 +465,7 @@ function hasFilters(filters) {
 function getTopNews(filters, page = 1, page_size = 20) {
   let url = `https://newsapi.org/v2/top-headlines?pageSize=${page_size}&page=${page}`
 
+
   if (filters['sources']) {
     url += `&sources=${filters['sources']}`
   } else {
@@ -460,7 +475,6 @@ function getTopNews(filters, page = 1, page_size = 20) {
   }
 
   url += `&apiKey=${newsApiKey}`;
-
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {

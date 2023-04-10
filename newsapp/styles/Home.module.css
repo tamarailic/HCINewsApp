@@ -70,6 +70,10 @@
   margin-right: auto;
 }
 
+.logo {
+  cursor: pointer;
+}
+
 /* Hamuberger menu */
 
 .hamburger {
