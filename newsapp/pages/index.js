@@ -36,8 +36,8 @@ export default function Home() {
     </Head>
     <section className={styles.main_container} id='main'>
       <LeftNav filters={filters} setFilters={setFilters} reporters={reporters} isExpended={isExpended} setIsExpended={setIsExpended} />
-      <TopNav filters={filters} setFilters={setFilters} setReporters={setReporters} allReporters={allReporters} />
-      <MainArea filters={filters} />
+      <TopNav filters={filters} setFilters={setFilters} setReporters={setReporters} allReporters={allReporters} isExpended={isExpended} />
+      <MainArea filters={filters} isExpended={isExpended} />
     </section>
   </>
   )
@@ -194,9 +194,9 @@ function getReporters() {
   }
 }
 
-function TopNav({ filters, setFilters, setReporters, allReporters }) {
+function TopNav({ filters, setFilters, setReporters, allReporters, isExpended }) {
   return (
-    <div className={styles.nav_top}>
+    <div className={`${styles.nav_top} ${!isExpended ? styles.adaptToNav : null}`}>
       <div className={styles.navContents}>
         <div>
           <div>
@@ -271,7 +271,7 @@ function CountryDropDown({ filters, setFilters, setReporters, allReporters }) {
 }
 
 
-function MainArea({ filters }) {
+function MainArea({ filters, isExpended }) {
   const { myGlobalData, setMyGlobalData } = useContext(MyAppContext);
   const [newsToShow, setNewsToShow] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -324,10 +324,12 @@ function MainArea({ filters }) {
     }
   }
 
+
+
   return (
     <>
       {newsToShow !== null &&
-        <div className={styles.main_area_container}>
+        <div className={`${styles.main_area_container} ${!isExpended ? styles.adaptToNav : null}`}>
           <h2 className={styles.page_title}>{`${hasAppliedFilters(filters) ? 'For you' : 'Top Stories'}`}</h2>
           <div className={styles.story_grid}>
             {[newsToShow[0]].map(bigStory => <BigStoryCard passValue={setMyGlobalData} key={bigStory['title'] || crypto.randomUUID()} story={bigStory} />)}
