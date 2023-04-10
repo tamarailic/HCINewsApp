@@ -1,14 +1,4 @@
-.left_nav {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  min-height: 100vh;
-  width: 18rem;
-  background-color: var(--AccentColor);
-  transition: all 250ms;
-  overflow-y: scroll;
-}
+/* Top nav */
 
 .nav_top {
   margin: auto 0 auto 18rem;
@@ -80,58 +70,87 @@
   margin-right: auto;
 }
 
-.categoriesTitle {
-  margin-left: 1rem;
-  margin-top: 2rem;
-  font-weight: 1000;
-  color: var(--BGNeutral);
+/* Hamuberger menu */
+
+.hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
 }
 
-.categoryIconTitle {
-  font-weight: 1000;
-  color: var(--BGNeutral);
+.hamburger .line {
+  width: 40px;
+  height: 5px;
+  display: block;
+  margin: 8px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--PrimaryText);
 }
 
-.breakLine {
-  width: 90%;
-  border: 1px solid var(--BGNeutral);
-  margin-bottom: 1rem;
-}
-
-.categoryCard {
-  height: 3rem;
-  margin: 0.3rem;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
-}
-
-.categoryCard:hover {
-  background-color: var(--BGNeutral);
-  border: 0.063rem solid var(--BGNeutral);
-  border-radius: 0.3rem;
+.hamburger:hover {
   cursor: pointer;
 }
 
-.categoryCard:hover>.categoryIconTitle {
-  color: var(--PrimaryText);
+.hamburger.is_active .line:nth-child(2) {
+  opacity: 0;
 }
 
-.categoryIcon {
-  padding: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-right: 1rem;
-  margin-left: 0.5rem;
-  border-radius: 0.3rem;
+.hamburger.is_active .line:nth-child(1) {
+  -webkit-transform: translateY(13px) rotate(45deg);
+  -ms-transform: translateY(13px) rotate(45deg);
+  -o-transform: translateY(13px) rotate(45deg);
+  transform: translateY(13px) rotate(45deg);
+  background-color: var(--BGNeutral);
+
+}
+
+.hamburger.is_active .line:nth-child(3) {
+  -webkit-transform: translateY(-13px) rotate(-45deg);
+  -ms-transform: translateY(-13px) rotate(-45deg);
+  -o-transform: translateY(-13px) rotate(-45deg);
+  transform: translateY(-13px) rotate(-45deg);
+  background-color: var(--BGNeutral);
+}
+
+.left_nav.hide_nav {
+  transform: translateX(-120%);
+  opacity: 0;
+}
+
+/* Left nav */
+
+.left_nav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 18rem;
+  background-color: var(--AccentColor);
+  overflow-y: scroll;
+  transform: translateX(0);
+  opacity: 1;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.datesSectionTitle {
+  margin-left: 1rem;
+  color: var(--BGNeutral);
+  font-size: 1.4rem;
+  margin-top: 5rem;
 }
 
 .datesTitle {
   margin-left: 1rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  font-weight: 1000;
   color: var(--BGNeutral);
+  font-size: 1.1rem;
 }
 
 .datesDiv {
@@ -163,13 +182,64 @@
   border: 0.063rem solid var(--Background);
 }
 
-.categoryIconDiv {
-  padding: 0.3rem;
-  width: 2.5rem;
+.categoriesTitle {
+  margin-left: 1rem;
+  margin-top: 2rem;
+  color: var(--BGNeutral);
+  margin-bottom: 1px;
+  line-height: 1.1;
+  font-size: 1.4rem;
+}
+
+.categoryIconTitle {
+  font-weight: 1000;
+  color: var(--BGNeutral);
+}
+
+.breakLine {
+  width: 90%;
+  border: 1px solid var(--BGNeutral);
+  margin-bottom: 1rem;
+}
+
+.categoryCard {
   height: 2.5rem;
+  margin: 0.3rem;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.categoryCard:hover {
+  background-color: var(--BGNeutral);
+  border: 0.063rem solid var(--BGNeutral);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.categoryCard:hover>.categoryIconTitle {
+  color: var(--PrimaryText);
+}
+
+.categoryIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
   margin-right: 1rem;
   margin-left: 0.5rem;
   border-radius: 0.3rem;
+}
+
+.categoryIconDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.6rem;
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  border-radius: 0.3rem;
+  min-width: 2.2rem;
 }
 
 .letterIcon {
@@ -177,6 +247,7 @@
   color: var(--BGNeutral);
   margin: 0;
   text-align: center;
+  font-size: 16px;
 }
 
 /* Main Area */

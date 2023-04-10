@@ -15,6 +15,7 @@ export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us' });
   const [allReporters, setAllReporters] = useState(null);
   const [reporters, setReporters] = useState(null);
+  const [isExpended, setIsExpended] = useState(true);
 
   const { reportersResponse, isLoading, isError } = getReporters();
 
@@ -34,7 +35,7 @@ export default function Home() {
       <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet" />
     </Head>
     <section className={styles.main_container} id='main'>
-      <LeftNav filters={filters} setFilters={setFilters} reporters={reporters} />
+      <LeftNav filters={filters} setFilters={setFilters} reporters={reporters} isExpended={isExpended} setIsExpended={setIsExpended} />
       <TopNav filters={filters} setFilters={setFilters} setReporters={setReporters} allReporters={allReporters} />
       <MainArea filters={filters} />
     </section>
@@ -42,19 +43,38 @@ export default function Home() {
   )
 }
 
-function LeftNav({ filters, setFilters, reporters }) {
+function LeftNav({ filters, setFilters, reporters, isExpended, setIsExpended }) {
   return (
-    <div className={styles.left_nav}>
-      <DatesSection filters={filters} setFilters={setFilters} />
-      <CategoriesSection filters={filters} setFilters={setFilters} />
-      <ReportersSection filters={filters} setFilters={setFilters} reporters={reporters} />
+    <>
+      <HamburgerMenu isExpended={isExpended} setIsExpended={setIsExpended} />
+      <div className={`${styles.left_nav} ${!isExpended ? styles.hide_nav : null}`}>
+        <DatesSection filters={filters} setFilters={setFilters} />
+        <CategoriesSection filters={filters} setFilters={setFilters} />
+        <ReportersSection filters={filters} setFilters={setFilters} reporters={reporters} />
+      </div>
+    </>
+  );
+}
+
+function HamburgerMenu({ isExpended, setIsExpended }) {
+  const [isActive, setIsActive] = useState(true);
+
+  function handleHamburgerClick() {
+    setIsActive(!isActive);
+    setIsExpended(!isExpended)
+  }
+  return (
+    <div className={`${styles.hamburger} ${isActive ? styles.is_active : null}`} onClick={handleHamburgerClick}>
+      <span className={styles.line}></span>
+      <span className={styles.line}></span>
+      <span className={styles.line}></span>
     </div>
   );
 }
 
-function DatesSection({filters, setFilters}){
+function DatesSection({ filters, setFilters }) {
   const [from, setFrom] = useState("");
-  const [to, toFrom] = useState("");
+  const [to, setTo] = useState("");
 
   function handleFromChanged(event) {
     const newFilters = JSON.parse(JSON.stringify(filters))
@@ -70,14 +90,14 @@ function DatesSection({filters, setFilters}){
     setFilters(newFilters)
   }
 
-  function claerFromChanged(event){
+  function claerFromChanged(event) {
     setFrom("")
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['from'] = '';
     setFilters(newFilters)
   }
 
-  function clearToChanged(event){
+  function clearToChanged(event) {
     setTo("")
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['to'] = '';
@@ -85,25 +105,25 @@ function DatesSection({filters, setFilters}){
   }
 
   return (<>
-  <h3 className={styles.datesTitle}>News for period</h3>
-      <div className={styles.datesDiv}>
-        <h5 className={styles.datesTitle}>From:</h5>
-        <div className={styles.dates}>
-          <input value={from} type="date" name="from" className={styles.dateInput} onChange={handleFromChanged}/>
-        </div>
-        <div style={{cursor:"pointer"}} className={styles.categoryIcon} onClick={claerFromChanged}>
-        <Image src="/images/cross.png" width={24} height={24} alt="x"/>
+    <h3 className={styles.datesSectionTitle}>News for period</h3>
+    <div className={styles.datesDiv}>
+      <h5 className={styles.datesTitle}>From:</h5>
+      <div className={styles.dates}>
+        <input value={from} type="date" name="from" className={styles.dateInput} onChange={handleFromChanged} />
       </div>
+      <div style={{ cursor: "pointer" }} className={styles.categoryIcon} onClick={claerFromChanged}>
+        <Image src="/images/cross.png" width={24} height={24} alt="x" />
       </div>
-      <div className={styles.datesDiv}>
-        <h5 className={styles.datesTitle}>Till:</h5>
-        <div className={styles.dates}>
-          <input type="date" name="till" className={styles.dateInput} onChange={handleToChanged}/>
-        </div>
-        <div style={{cursor:"pointer"}} className={styles.categoryIcon} onClick={clearToChanged}>
-        <Image src="/images/cross.png" width={24} height={24} alt="x"/>
+    </div>
+    <div className={styles.datesDiv}>
+      <h5 className={styles.datesTitle}>Till:</h5>
+      <div className={styles.dates}>
+        <input value={to} type="date" name="till" className={styles.dateInput} onChange={handleToChanged} />
       </div>
-      </div></>)
+      <div style={{ cursor: "pointer" }} className={styles.categoryIcon} onClick={clearToChanged}>
+        <Image src="/images/cross.png" width={24} height={24} alt="x" />
+      </div>
+    </div></>)
 }
 
 function CategoriesSection({ filters, setFilters }) {
@@ -132,7 +152,7 @@ function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters }) {
 
   return (<div className={styles.categoryCard} onClick={handleCategoryChange}>
     <div style={cardStyle} className={styles.categoryIcon} >
-      <Image src={imageUrl} width={24} height={24} alt={title} />
+      <Image src={imageUrl} width={18} height={18} alt={title} />
     </div>
     <h4 className={styles.categoryIconTitle}>{title}</h4>
   </div>)
