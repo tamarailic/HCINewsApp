@@ -9,7 +9,7 @@ import Head from 'next/head';
 import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = 'f0885235e81b407294d7c96b9e3f60a4';
+const newsApiKey = 'b7f4a29324c5450eb1efed9da362570d';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
@@ -75,13 +75,13 @@ function SearchBar({ filters, setFilters }) {
     setFilters(newFilters);
   }
 
-  function handleSearchInFocus(){
+  function handleSearchInFocus() {
     setSearchInFocus(true);
   }
 
   return (
     <div className={styles.searchSection}>
-      <div className={styles.search} style={searchInFocus ? {border:"0.063rem solid #000"} : {border:"0.063rem solid var(--BGNeutral)"}} onClick={handleSearchInFocus}>
+      <div className={styles.search} style={searchInFocus ? { border: "0.063rem solid #000" } : { border: "0.063rem solid var(--BGNeutral)" }} onClick={handleSearchInFocus}>
         <input type="text" name="search" className={styles.round} placeholder='Search' onChange={handleNewQuery} />
         <div className={styles.imgDiv}>
           <Image src="/images/searchIcon.png" width={24} height={24} alt='search icon' />
@@ -352,6 +352,8 @@ function MainArea({ filters, isExpended }) {
     setCurrentPage(1);
     setReadyToLoadMore(true);
   }
+
+  console.log(filters);
 
   return (
     <>
