@@ -488,8 +488,6 @@ function getFilteredNews(filters, page = 1, page_size = 20) {
 
   url += `&apiKey=${newsApiKey}`;
 
-  console.log(url);
-
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {
