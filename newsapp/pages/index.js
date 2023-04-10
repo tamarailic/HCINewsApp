@@ -12,7 +12,7 @@ const fetcher = (...args) => fetch(...args).then(res => res.json());
 const newsApiKey = '339e56b6d42f4a0ab9c4f820c0a35558';
 
 export default function Home() {
-  const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us' });
+  const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
   const [allReporters, setAllReporters] = useState(null);
   const [reporters, setReporters] = useState(null);
   const [isExpended, setIsExpended] = useState(true);
@@ -24,7 +24,7 @@ export default function Home() {
 
   if (allReporters === null) {
     setAllReporters(reportersResponse['sources']);
-    const filteredReporters = reportersResponse['sources'].filter(el => el['country'] == filters['country']).map(reporter => reporter['name']);
+    const filteredReporters = reportersResponse['sources'].filter(el => el['country'] == filters['country']).map(reporter => { return { name:reporter['name'], id:reporter['id']}});
     setReporters(filteredReporters);
   }
 
@@ -228,6 +228,7 @@ function CategoryCard({ cardStyle, imageUrl, title, filters, setFilters, selecte
   function handleCategoryChange() {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['category'] = title.toLowerCase()
+    newFilters['sources'] = '';
     setFilters(newFilters)
     setSelected()
   }
@@ -251,15 +252,16 @@ function ReportersSection({ filters, setFilters, reporters }) {
     <h2 className={styles.categoriesTitle}>Top reporters in your country</h2>
     <hr className={styles.breakLine} />
     <div>
-      {reporters.map(r => <ReportCard selected={selected} setSelected={() => handleSelectedReporter(r)} filters={filters} setFilters={setFilters} key={r} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r} />)}
+      {reporters.map(r => <ReportCard id={r.id} selected={selected} setSelected={() => handleSelectedReporter(r.name)} filters={filters} setFilters={setFilters} key={r.id} cardStyle={{ border: "0.063rem solid #007AFF", backgroundColor: "#007AFF" }} title={r.name} />)}
     </div>
   </>)
 }
 
-function ReportCard({ cardStyle, title, filters, setFilters, selected, setSelected }) {
+function ReportCard({ cardStyle, title, id, filters, setFilters, selected, setSelected }) {
   function handleReporter() {
     const newFilters = JSON.parse(JSON.stringify(filters))
-    newFilters['q'] = title
+    newFilters['sources'] = id
+    newFilters['category'] = '';
     setFilters(newFilters)
     setSelected()
   }
