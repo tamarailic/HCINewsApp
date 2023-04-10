@@ -9,7 +9,7 @@ import Head from 'next/head';
 import { MyAppContext } from './_app';
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
-const newsApiKey = '89a8cf95f1c54d708a69800a2b1c4195';
+const newsApiKey = 'fe85571adc394f96ae927a0c4101459e';
 
 export default function Home() {
   const [filters, setFilters] = useState({ q: '', from: '', to: '', category: '', country: 'us', sources: '' });
