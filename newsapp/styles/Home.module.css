@@ -136,6 +136,7 @@
 
 .datesDiv {
   display: flex;
+  align-items: center;
 }
 
 .dates {
@@ -145,7 +146,6 @@
   position: relative;
   height: 2rem;
   width: 50%;
-  margin-right: 4rem;
   margin-left: auto;
 }
 

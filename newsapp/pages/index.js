@@ -52,34 +52,58 @@ function LeftNav({ filters, setFilters, reporters }) {
   );
 }
 
-function DatesSection({ filters, setFilters }) {
+function DatesSection({filters, setFilters}){
+  const [from, setFrom] = useState("");
+  const [to, toFrom] = useState("");
 
   function handleFromChanged(event) {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['from'] = event.target.value
+    setFrom(event.target.value)
     setFilters(newFilters)
   }
 
   function handleToChanged(event) {
     const newFilters = JSON.parse(JSON.stringify(filters))
     newFilters['to'] = event.target.value
+    setTo(event.target.value)
+    setFilters(newFilters)
+  }
+
+  function claerFromChanged(event){
+    setFrom("")
+    const newFilters = JSON.parse(JSON.stringify(filters))
+    newFilters['from'] = '';
+    setFilters(newFilters)
+  }
+
+  function clearToChanged(event){
+    setTo("")
+    const newFilters = JSON.parse(JSON.stringify(filters))
+    newFilters['to'] = '';
     setFilters(newFilters)
   }
 
   return (<>
-    <h3 className={styles.datesTitle}>News for period</h3>
-    <div className={styles.datesDiv}>
-      <h5 className={styles.datesTitle}>From:</h5>
-      <div className={styles.dates}>
-        <input type="date" name="from" className={styles.dateInput} onChange={handleFromChanged} />
+  <h3 className={styles.datesTitle}>News for period</h3>
+      <div className={styles.datesDiv}>
+        <h5 className={styles.datesTitle}>From:</h5>
+        <div className={styles.dates}>
+          <input value={from} type="date" name="from" className={styles.dateInput} onChange={handleFromChanged}/>
+        </div>
+        <div style={{cursor:"pointer"}} className={styles.categoryIcon} onClick={claerFromChanged}>
+        <Image src="/images/cross.png" width={24} height={24} alt="x"/>
       </div>
-    </div>
-    <div className={styles.datesDiv}>
-      <h5 className={styles.datesTitle}>Till:</h5>
-      <div className={styles.dates}>
-        <input type="date" name="till" className={styles.dateInput} onChange={handleToChanged} />
       </div>
-    </div></>)
+      <div className={styles.datesDiv}>
+        <h5 className={styles.datesTitle}>Till:</h5>
+        <div className={styles.dates}>
+          <input type="date" name="till" className={styles.dateInput} onChange={handleToChanged}/>
+        </div>
+        <div style={{cursor:"pointer"}} className={styles.categoryIcon} onClick={clearToChanged}>
+        <Image src="/images/cross.png" width={24} height={24} alt="x"/>
+      </div>
+      </div></>)
 }
 
 function CategoriesSection({ filters, setFilters }) {
