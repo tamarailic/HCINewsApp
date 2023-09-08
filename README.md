@@ -4,7 +4,7 @@
 
 ## Project
 
-This project teached us how to take into account diffenrent aspects of Human Computer Interection (HCI) when developing diffenrent types of software products. We learned a lot and for now on we first plan different user flows and interactions before tuching a keyboard and developling applications
+This project taught us how to take into account different aspects of Human-Computer interaction (HCI) when developing different types of software products. We learned a lot and from now on we first plan different user flows and interactions before touching a keyboard and developing applications
 
 ## About the field 
 
