@@ -1,4 +1,4 @@
-# HCINewsApp
+# HCI News App
 
 ![HCI](https://github.com/UPocek/HCINewsApp/blob/main/docs/Screenshot%202023-09-09%20at%2012.51.34%20AM.png)
 
